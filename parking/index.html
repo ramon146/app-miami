@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#082f49">
+<title>Miami • Parcheggi & Supermercati</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f8fa;color:#102a36}header{background:linear-gradient(145deg,#082f49,#087f8c);color:#fff;padding:30px 18px}main,header div{max-width:620px;margin:auto}h1{margin:0 0 7px;font-size:29px}header p{margin:0;opacity:.9}main{padding:16px}.card{background:#fff;border-radius:20px;padding:18px;margin:0 0 13px;box-shadow:0 4px 20px #173d4d12}.card h2{font-size:19px;margin:0 0 6px}.card p{font-size:14px;line-height:1.45;color:#536b75;margin:5px 0 13px}.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px 12px;background:#087f8c;color:#fff;font-size:16px;font-weight:800;text-align:center;text-decoration:none;cursor:pointer}.primary{border:2px solid #087f8c}.note{font-size:13px;line-height:1.5;background:#fff7df;border-left:4px solid #e5a000;padding:12px 14px;border-radius:12px;margin:5px 0 15px}.status{font-size:13px;text-align:center;color:#607680;margin:12px 0 4px}.super{border:2px solid #e5a000}.small{font-size:12px;color:#6b7c83;line-height:1.45;margin:18px 2px 28px}
+</style>
+</head>
+<body>
+<header><div><h1>🅿️ Miami facile</h1><p>Parcheggi e supermercati vicino a dove sei adesso</p></div></header>
+<main>
+<div class="note"><b>Come funziona:</b> scegli cosa cerchi. Il telefono rileva la tua posizione e apre Google Maps con la ricerca più adatta nelle vicinanze.</div>
+<div class="card primary"><h2>🏛️ Parcheggi pubblici</h2><p><b>Prima scelta.</b> Cerca garage e parcheggi municipali/pubblici vicino a te. A Miami Beach sono spesso più convenienti dei garage privati.</p><button class="btn" onclick="near('municipal public parking garage')">Apri pubblici vicino a me</button></div>
+<div class="card"><h2>🅿️ Parcheggi su strada</h2><p>Cerca parcheggi su strada e aree con parchimetro vicino alla tua posizione. Controlla sempre cartelli, orari e numero della zona.</p><button class="btn" onclick="near('street parking metered parking')">Apri su strada vicino a me</button></div>
+<div class="card"><h2>🏢 Parcheggi privati</h2><p>Cerca garage e parcheggi privati. Controlla il prezzo prima di entrare: può essere molto più alto del municipale.</p><button class="btn" onclick="near('private parking garage')">Apri privati vicino a me</button></div>
+<div class="card super"><h2>🛒 Supermercati ben forniti</h2><p>Cerca supermercati grandi e completi vicino a te, privilegiando catene come <b>Publix, Whole Foods, Trader Joe's e The Fresh Market</b>, dove è più facile trovare anche pasta, salumi, formaggi, conserve e altri prodotti italiani/importati.</p><button class="btn" onclick="near('Publix Whole Foods Trader Joe’s The Fresh Market supermarket Italian food')">Trova supermercati vicino a me</button></div>
+<div id="status" class="status"></div>
+<p class="small">Google Maps decide quali risultati mostrare e i prezzi possono cambiare. “Pubblico”, “su strada” e “privato” sono ricerche separate per ridurre la confusione; verifica comunque il cartello o la tariffa mostrata sul posto.</p>
+</main>
+<script>
+function near(q){
+ const s=document.getElementById('status');s.textContent='📍 Cerco la tua posizione…';
+ const open=(lat,lon)=>{const u='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'&center='+lat+','+lon;s.textContent='Apro Google Maps…';location.href=u};
+ if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>open(p.coords.latitude,p.coords.longitude),()=>{s.textContent='Posizione non disponibile: Google Maps userà la tua posizione.';location.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)},{enableHighAccuracy:true,timeout:6000,maximumAge:30000})}else{location.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+}
+</script>
+</body></html>
