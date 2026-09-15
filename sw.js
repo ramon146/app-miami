@@ -1,21 +1,22 @@
-const C='miami-v8-distanze';
+const C='miami-v9-spiegazioni';
 const DIST=[
-['Key Biscayne — Crandon + Cape Florida','🚗 ~55 km A/R'],
-['Oleta River State Park','🚗 ~55 km A/R'],
-['Miami completa — Wynwood, Design District, Little Havana, Coconut Grove','🚗 ~50 km totali'],
-['Vizcaya + Coconut Grove + Coral Gables','🚗 ~50 km totali'],
-['Fairchild Tropical Garden + Deering Estate','🚗 ~75 km A/R'],
-['Zoo Miami','🚗 ~100 km A/R'],
-['Coral Castle + Homestead','🚗 ~120 km A/R'],
-['Everglades — Shark Valley','🚗 ~145 km A/R'],
-['Everglades completa — Homestead, Anhinga Trail, Flamingo','🚗 ~270 km A/R'],
-['Biscayne National Park','🚗 ~150 km A/R'],
-['Key Largo — John Pennekamp','🚗 ~210 km A/R'],
-['Islamorada + Upper Keys','🚗 ~260 km A/R'],
-['Key West','🚗 ~540 km A/R'],
-['Fort Lauderdale + Hollywood Beach','🚗 ~100 km A/R']
-];
-function addDistances(t){for(const [name,d] of DIST){const h='<h3>';const pos=t.indexOf(name);if(pos<0)continue;const end=t.indexOf('</h3>',pos);if(end<0)continue;const after=end+5;const next=t.slice(after,after+350);if(next.includes(d))continue;const secondPillEnd=(()=>{const a=t.indexOf('</span>',after);if(a<0)return -1;const b=t.indexOf('</span>',a+7);return b<0?-1:b+7})();if(secondPillEnd>0)t=t.slice(0,secondPillEnd)+'<span class="pill">'+d+'</span>'+t.slice(secondPillEnd)}return t}
+['Key Biscayne — Crandon + Cape Florida','🚗 ~55 km A/R'],['Oleta River State Park','🚗 ~55 km A/R'],['Miami completa — Wynwood, Design District, Little Havana, Coconut Grove','🚗 ~50 km totali'],['Vizcaya + Coconut Grove + Coral Gables','🚗 ~50 km totali'],['Fairchild Tropical Garden + Deering Estate','🚗 ~75 km A/R'],['Zoo Miami','🚗 ~100 km A/R'],['Coral Castle + Homestead','🚗 ~120 km A/R'],['Everglades — Shark Valley','🚗 ~145 km A/R'],['Everglades completa — Homestead, Anhinga Trail, Flamingo','🚗 ~270 km A/R'],['Biscayne National Park','🚗 ~150 km A/R'],['Key Largo — John Pennekamp','🚗 ~210 km A/R'],['Islamorada + Upper Keys','🚗 ~260 km A/R'],['Key West','🚗 ~540 km A/R'],['Fort Lauderdale + Hollywood Beach','🚗 ~100 km A/R']];
+const DESC={
+'Key Biscayne — Crandon + Cape Florida':'Una gita facile e rilassante tra spiagge, palme, mare e il celebre faro di Cape Florida. Ideale per panorami e qualche ora in spiaggia senza allontanarsi troppo da Miami.',
+'Oleta River State Park':'Un grande parco naturale tra mangrovie e acqua, molto diverso da South Beach. Potete passeggiare, stare sulla piccola spiaggia oppure aggiungere kayak e attività acquatiche.',
+'Miami completa — Wynwood, Design District, Little Havana, Coconut Grove':'Il giro per conoscere le diverse anime di Miami: murales a Wynwood, lusso nel Design District, cultura cubana a Little Havana e atmosfera rilassata a Coconut Grove.',
+'Vizcaya + Coconut Grove + Coral Gables':'Una giornata elegante e culturale: la spettacolare villa Vizcaya e i suoi giardini sul mare, seguiti da Coconut Grove e dalle strade curate di Coral Gables.',
+'Fairchild Tropical Garden + Deering Estate':'Una giornata tranquilla immersa nel verde: grande giardino tropicale, piante e farfalle a Fairchild, poi storia, natura e Biscayne Bay alla Deering Estate.',
+'Zoo Miami':'Un enorme zoo tropicale all’aperto con animali e habitat distribuiti su un’area molto vasta. È una vera giornata di visita, soprattutto se volete vederlo con calma.',
+'Coral Castle + Homestead':'Una delle curiosità più insolite della Florida: una struttura monumentale costruita con enormi blocchi di corallo, abbinata alla zona rurale e agricola di Homestead.',
+'Everglades — Shark Valley':'Una delle esperienze simbolo della Florida: natura selvaggia, alligatori e uccelli lungo il percorso di Shark Valley, fino alla torre panoramica sulle Everglades.',
+'Everglades completa — Homestead, Anhinga Trail, Flamingo':'La versione completa delle Everglades: attraversate diversi ecosistemi, percorrete l’Anhinga Trail e arrivate fino a Flamingo, nell’estremo sud del parco.',
+'Biscayne National Park':'Un parco nazionale quasi interamente marino. Il meglio sono acqua, isole, barriera corallina e Boca Chita; vale soprattutto scegliendo anche una gita in barca o snorkeling.',
+'Key Largo — John Pennekamp':'La porta d’ingresso alle Florida Keys: mare tropicale, barriera corallina, snorkeling e barche. È il modo più semplice per assaggiare le Keys senza arrivare fino a Key West.',
+'Islamorada + Upper Keys':'Una vera road trip nelle Keys tra ponti, mare su entrambi i lati, porticcioli e atmosfera da isola. Islamorada è rilassata ed è famosa per mare, pesca e Robbie’s Marina.',
+'Key West':'La road trip più famosa della Florida: Overseas Highway, ponti e isole fino alla città più a sud degli Stati Uniti continentali, con Duval Street, Southernmost Point e Mallory Square.',
+'Fort Lauderdale + Hollywood Beach':'Una giornata sulla costa a nord di Miami: canali e waterfront di Fort Lauderdale, Las Olas Boulevard e poi la lunga passeggiata sul mare di Hollywood Beach.'};
+function enhance(t){for(const [name,d] of DIST){const pos=t.indexOf(name);if(pos<0)continue;const end=t.indexOf('</h3>',pos);if(end<0)continue;const after=end+5;const a=t.indexOf('</span>',after),b=a<0?-1:t.indexOf('</span>',a+7);if(b>0&&!t.slice(after,b+250).includes(d))t=t.slice(0,b+7)+'<span class="pill">'+d+'</span>'+t.slice(b+7);const pos2=t.indexOf(name);const hEnd=t.indexOf('</h3>',pos2);const action=t.indexOf('<div class="actions">',hEnd);if(action<0)continue;const segment=t.slice(hEnd,action);if(!segment.includes('<b>Cos’è:</b>')){const pEnd=t.lastIndexOf('</p>',action);if(pEnd>hEnd)t=t.slice(0,pEnd+4)+'<p><b>Cos’è:</b> '+DESC[name]+'</p>'+t.slice(pEnd+4)}}return t}
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(['./','./index.html','./manifest.webmanifest'])))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([self.clients.claim(),caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x))))])));
-self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.mode==='navigate'&&u.origin===location.origin){e.respondWith(fetch(e.request).then(async r=>{let t=await r.text();t=addDistances(t);return new Response(t,{status:r.status,statusText:r.statusText,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-cache'}})}).catch(()=>caches.match('./index.html')));return}e.respondWith(fetch(e.request).then(r=>{let q=r.clone();caches.open(C).then(c=>c.put(e.request,q));return r}).catch(()=>caches.match(e.request)))});
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.mode==='navigate'&&u.origin===location.origin){e.respondWith(fetch(e.request).then(async r=>{let t=enhance(await r.text());return new Response(t,{status:r.status,statusText:r.statusText,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-cache'}})}).catch(()=>caches.match('./index.html')));return}e.respondWith(fetch(e.request).then(r=>{let q=r.clone();caches.open(C).then(c=>c.put(e.request,q));return r}).catch(()=>caches.match(e.request)))});
